@@ -1,0 +1,60 @@
+{% extends "mail/layout.html" %}
+{% load static %}
+
+{% block body %}
+<h2>{{ request.user.email }}</h2>
+<button class="btn btn-sm btn-outline-primary" id="inbox">Inbox</button>
+<button class="btn btn-sm btn-outline-primary" id="compose">Compose</button>
+<button class="btn btn-sm btn-outline-primary" id="sent">Sent</button>
+<button class="btn btn-sm btn-outline-primary" id="archived">Archived</button>
+<a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
+<hr>
+
+<div id="section-errormessage" class="alert alert-danger"></div>
+<div id="section-emails" class="list-group"></div>
+<div id="section-readview">
+
+<div><h3>View Email</h3></div>
+<div class="container card card-body">
+<div class="row">
+<div class="col-sm-12"><strong>From: </strong><span id="sender" class="card-title"></span></div></div>
+<div class="row">
+<div class="col-sm-12"><b>To:</b>
+<span id="recipients" class="card-subtitle mb-2"></span></div></div>
+<div class="row">
+<div class="col-sm-12"><strong>Subject: </strong><span id="subject"></span></div></div>
+<div class="row">
+<div class="col-sm-12">
+<span class="badge badge-info badge-pill" id="timestamp"></span></div></div><hr/>
+<div class="row">
+<div class="col-sm-12"><p id="body" class="text"></p></div></div><hr/>
+<div class="row">
+<div class="col-sm-12">
+<div class="input-group">
+<button class="btn btn-sm btn-success" id="read-response" data-email="">Reply</button>
+<button class="btn btn-sm btn-secondary ml-2" id="read-archive" data-email="" data-archived="">Archive</button></div></div></div></div></div>
+
+<div id="section-compose">
+<div id="compose-title"><h3>New Email</h3></div>
+<form id="compose-formcreating">
+<div class="field-group">
+<input disabled class="control" value="{{ request.user.email }}"></div>
+<div class="field-group">
+<strong>Recipients: </strong>
+<small>At least one recipient required, for multiples use commas.</small>
+<input id="field-recipients" class="field-control">
+<div class="invalid-feedback font-weight-bold" id="alertrecip">At least one recipient required.</div></div>
+<div class="field-group">
+<strong>Subject:</strong>
+<small>Please include a subject.</small>
+<input class="field-control" id="field-subject" maxlength="255"></div>
+<strong>Email:</strong>
+<small>Write the content of the email down below:</small><br>
+<textarea class="field-control" id="field-body"></textarea><br>
+<input type="submit" class="btn btn-sm btn-success my-2"/></form></div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'mail/inbox.js' %}"></script>
+{% endblock %}
