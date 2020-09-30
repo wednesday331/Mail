@@ -24,7 +24,7 @@ class Email(models.Model):
                                         related_name="emails_received")
     subject = models.CharField(max_length=255)
     body = models.TextField(blank=True)
-    time_stamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)
     archived = models.BooleanField(default=False)
 
