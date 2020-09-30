@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """This file contains all the relevant models used in views.py"""
 
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
