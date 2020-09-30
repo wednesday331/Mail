@@ -1,4 +1,10 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+"""This is the main module to execute Python code for the Mail Project"""
+
+
 import json
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -6,12 +12,11 @@ from django.http import JsonResponse
 from django.shortcuts import HttpResponse, HttpResponseRedirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+from .models import Email, User
 
-from .models import User, Email
-
-
+# Index
 def index(request):
-
+    """Function to determine whether to display the mailbox or not."""
     # Authenticated users view their inbox
     if request.user.is_authenticated:
         return render(request, "mail/inbox.html")
@@ -23,8 +28,9 @@ def index(request):
 
 @csrf_exempt
 @login_required
+#Compose Function
 def compose(request):
-
+    """Contains code to compose an email."""
     # Composing a new email must be via POST
     if request.method != "POST":
         return JsonResponse({"error": "POST request required."}, status=400)
@@ -73,8 +79,9 @@ def compose(request):
 
 
 @login_required
+#Mailbox Function
 def mailbox(request, mailbox):
-
+    """Contains code to display the appropriate mailbox.""" 
     # Filter emails returned based on mailbox
     if mailbox == "inbox":
         emails = Email.objects.filter(
@@ -98,8 +105,9 @@ def mailbox(request, mailbox):
 
 @csrf_exempt
 @login_required
+#Email Function
 def email(request, email_id):
-
+    """Contains code to display each email through APIs."""
     # Query for requested email
     try:
         email = Email.objects.get(user=request.user, pk=email_id)
@@ -126,8 +134,9 @@ def email(request, email_id):
             "error": "GET or PUT request required."
         }, status=400)
 
-
+#Login
 def login_view(request):
+    """Contains code to login a user."""
     if request.method == "POST":
 
         # Attempt to sign user in
@@ -146,13 +155,15 @@ def login_view(request):
     else:
         return render(request, "mail/login.html")
 
-
+#Logout
 def logout_view(request):
+    """Contains code to logout an active user."""
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
-
+#Register User Function
 def register(request):
+    """Contains code to register a user account."""
     if request.method == "POST":
         email = request.POST["email"]
 
